@@ -28,6 +28,12 @@ cmus_autostart_cmd = ['gnome-terminal', '--', cmus_cmd]
 #cmus_autostart_terminal_cmd = ['exo-open', '--launch', 'TerminalEmulator', cmus_cmd]
 
 
+# Auto-close cmus when quitting qcmus
+#qcmus_exit_behaviour = 'kill'                # always close
+#qcmus_exit_behaviour = 'kill-if-owner'       # close if cmus_autostart_if_dead == True
+qcmus_exit_behaviour = 'nothing'              # live and let live
+
+
 #########################################################################
 ### player settings
 #########################################################################
@@ -37,7 +43,7 @@ songinfo_length_max = -1
 
 
 # Album art size on player tab
-player_coversize = 400
+player_coversize = 500
 
 
 # Album art size on mini player

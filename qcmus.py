@@ -20,7 +20,7 @@ from PlayerViewWidget import PlayerViewWidget
 from MiniPlayerViewWidget import MiniPlayerViewWidget
 from Library import Library
 
-from _prefs import cmus_remote_cmd, statusbar_message, statusbar_always_on, statusbar_font_size, statusbar_font, window_sizes, allow_resize, cmus_shortcuts_enabled
+from _prefs import cmus_remote_cmd, statusbar_message, statusbar_always_on, statusbar_font_size, statusbar_font, window_sizes, allow_resize, cmus_shortcuts_enabled, qcmus_exit_behaviour, cmus_autostart_if_dead
 
 class qcmus(QMainWindow):
     def __init__(self):
@@ -215,7 +215,11 @@ class qcmus(QMainWindow):
         if event.key() == 96:
             statusbar_always_on or self.statusBar().hide()
     
-    
+    def closeEvent(self, event):
+        if qcmus_exit_behaviour == 'kill' or (qcmus_exit_behaviour == 'kill-if-owner' and self.cmus.is_owner == True):
+            subprocess.run([cmus_remote_cmd, '-C', 'quit'])
+
+
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     qcmus = qcmus()

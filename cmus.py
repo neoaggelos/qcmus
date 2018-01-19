@@ -39,6 +39,9 @@ class cmus:
         self.artist = ''
         self.albumart = []
         
+        # did we start cmus?
+        self.is_owner = False
+        
         self.refresh()
         
     def refresh(self):
@@ -50,6 +53,7 @@ class cmus:
             global cmus_autostart_if_dead
             if cmus_autostart_if_dead:
                 subprocess.run(cmus_autostart_cmd)
+                self.is_owner = True
         
         elif self.data.startswith('status playing'):
             self.status = 'playing'
