@@ -39,12 +39,6 @@ class cmus:
         self.artist = ''
         self.albumart = []
         
-        # load library
-        self.files = []
-        cmus_lib = open(os.path.expandvars(cmus_lib_path), 'r')
-        for _, f in enumerate(cmus_lib):
-            self.files.append(f[:-1])
-        
         self.refresh()
         
     def refresh(self):

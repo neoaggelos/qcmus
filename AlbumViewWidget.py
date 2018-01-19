@@ -12,12 +12,6 @@ from AlbumWidget import AlbumWidget
 
 from _prefs import album_size, spacing, column_width, cmus_remote_cmd, default_albums_sort
 
-class Album():
-    def __init__(self, artist, album, widget):
-        self.artist = artist
-        self.album = album
-        self.widget = widget
-
 class AlbumViewWidget(QScrollArea):
         
     def __init__(self, parent, artist='__all__'):
@@ -26,9 +20,10 @@ class AlbumViewWidget(QScrollArea):
         self.parent = parent
         
         self.columns = self.width()//column_width
-        self.addAlbums(parent.cmus.files, artist)
+        self.addAlbums(artist)
         
-    def addAlbums(self, files, from_artist):
+    def addAlbums(self, from_artist):
+        lib = self.parent.library
         
         self.setWidget(QWidget())
         self.setWidgetResizable(True)
@@ -37,31 +32,15 @@ class AlbumViewWidget(QScrollArea):
         self.widget().layout().setSpacing(spacing)
         self.widget().layout().setAlignment(Qt.AlignCenter)
         
-        self.albums = []
-        albums_list = []
-        for f in files:
-            art = []
-            try:
-                mut = mutagen.File(f)
-                album = mut.tags["TALB"].text[0]
-                artist = mut.tags["TPE1"].text[0]
-                try:
-                    art = mut.tags["APIC:"]
-                except:
-                    art = []
-            except:
-                continue # do not add unknown crap
-            
-            if (not album in albums_list) and (from_artist == '__all__' or from_artist == artist):
-                albums_list.append(album)
-                
-                w = AlbumWidget(artist, album, art)
-                self.albums.append(Album(artist, album, w))
+        self.widgets = []
+        for a in lib.albums:
+            w = AlbumWidget(a.artist, a.album, a.art)
+            self.widgets.append(w)
         
-        if default_albums_sort == "artist":
-            self.albums.sort(key=lambda album: album.artist)
-        else:
-            self.albums.sort(key=lambda album: album.album)
+        if default_albums_sort == 'album':
+            self.widgets.sort(key=lambda w: w.album)
+        elif default_albums_sort == 'artist':
+            self.widgets.sort(key=lambda w: w.artist)
         
     def resizeEvent(self, event):
         self.refresh()
@@ -74,9 +53,9 @@ class AlbumViewWidget(QScrollArea):
         res = a.exec_(self.mapToGlobal(event.pos()))
         
         if res == by_name:
-            self.albums.sort(key=lambda album: album.album)
+            self.widgets.sort(key=lambda w: w.album)
         elif res == by_artist:
-            self.albums.sort(key=lambda album: album.artist)
+            self.widgets.sort(key=lambda w: w.artist)
         
         self.refresh()
     
@@ -84,15 +63,7 @@ class AlbumViewWidget(QScrollArea):
         self.columns = self.width()//column_width
         
         count = 0
-        for a in self.albums:
-            self.widget().layout().addWidget(a.widget, count//self.columns, count%self.columns)
+        for w in self.widgets:
+            self.widget().layout().addWidget(w, count//self.columns, count%self.columns)
             count = count + 1
-        
-    
-    def makeButtonCallback(self, artist, album):
-        def actualCallback(self):
-            print("Playing: ", artist, album)
-            subprocess.run([cmus_remote_cmd, '-C', 'view 1', 'filter', 'player-stop', '/{} {}'.format(artist, album), 'set play_sorted=false', 'set aaa_mode=album', 'win-activate'])
-        
-        return actualCallback
-    
+

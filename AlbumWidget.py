@@ -17,6 +17,9 @@ class AlbumWidget(QWidget):
         self.layout().setContentsMargins(0,0,0,0)
         self.layout().setSpacing(2)
         
+        self.artist = artist
+        self.album = album
+        
         btn = QPushButton()
         if art == []:
             btn.setText(artist + '\n' + album)

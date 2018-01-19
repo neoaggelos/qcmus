@@ -46,7 +46,6 @@ TODO
 * Write a proper TODO
 * Write a proper CONFIGURATION.txt, explaining the preferences
 * Show album songs
-* Load library once in start-up (in a Library() class)
 * Browse artists/playlists
 * View currently playing queue
 * Add song/album/artist/playlist to queue

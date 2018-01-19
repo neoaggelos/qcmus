@@ -17,7 +17,6 @@ class MiniPlayerViewWidget(QWidget):
         self.parent = parent
         
         # layout
-        ## TODO MAXIMUMU SIZE
         self.setLayout(QHBoxLayout())
         self.layout().setContentsMargins(0,0,20,0)
         self.layout().setSpacing(20)

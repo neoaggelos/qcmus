@@ -13,11 +13,12 @@ from PyQt5.QtWidgets import (QWidget, QLabel, QSlider,
 from PyQt5.QtGui import QIcon, QPixmap, QFont
 '''
 
-import cmus
+from cmus import cmus
 from AlbumViewWidget import AlbumViewWidget
 from SongsViewWidget import SongsViewWidget
 from PlayerViewWidget import PlayerViewWidget
 from MiniPlayerViewWidget import MiniPlayerViewWidget
+from Library import Library
 
 from _prefs import cmus_remote_cmd, statusbar_message, statusbar_always_on, statusbar_font_size, statusbar_font, window_sizes, allow_resize
 
@@ -29,7 +30,8 @@ class qcmus(QMainWindow):
         
     def initUI(self):
         # init controller
-        self.cmus = cmus.cmus()
+        self.cmus = cmus()
+        self.library = Library()
 
         # now playing tab
         self.nowplaying_tab = PlayerViewWidget(self)
@@ -193,7 +195,7 @@ class qcmus(QMainWindow):
             rect = QDesktopWidget().availableGeometry(self)
             
             self.move(QPoint(rect.x(), rect.y()))
-            self.setFixedSize(QSize(rect.width(), rect.height()))
+            self.setFixedSize(QSize(rect.width(), rect.height()-self.statusBar().height()))
         else:
             self.setFixedSize(window_sizes['1'])
         
