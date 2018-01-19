@@ -59,7 +59,6 @@ class qcmus(QMainWindow):
         self.centralWidget().addTab(self.songs_tab, "Songs")
         
         self.centralWidget().setStyleSheet('QTabWidget::tab-bar { alignment: left; }')
-        #self.centralWidget().setMinimumSize(self.minimumSize().width(), self.minimumSize().height())
         self.setWindowTitle(self.cmus.title + ' - ' + self.cmus.artist)
         
         # status bar font
@@ -125,7 +124,6 @@ class qcmus(QMainWindow):
         add_action('shuffle', 's', cmus_command('toggle shuffle'))
         add_action('r-current', 'Ctrl+r', cmus_command('toggle repeat_current'))
         add_action('continue', 'Alt+c', cmus_command('toggle continue'))
-        #add_action('follow', 'f', cmus_command('toggle follow'))
         add_action('sorted', 'o', cmus_command('toggle play_sorted'))
         add_action('aaa_mode', 'm', cmus_command('toggle aaa_mode'))
         

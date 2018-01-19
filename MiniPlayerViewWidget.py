@@ -30,9 +30,6 @@ class MiniPlayerViewWidget(QWidget):
         
         self.layout().addWidget(self.albumart_label)
         self.layout().setAlignment(self.albumart_label, Qt.AlignLeft)
-        
-        # song info
-        #self.layout().addStretch(-1)
 
         songinfo_layout = QVBoxLayout()
         songinfo_layout.setSpacing(1)
@@ -49,7 +46,6 @@ class MiniPlayerViewWidget(QWidget):
             label.setFont(font)
             
             songinfo_layout.addWidget(label)
-            #self.layout().setAlignment(label, Qt.AlignLeft)
             
             return label
         
@@ -101,15 +97,12 @@ class MiniPlayerViewWidget(QWidget):
     
     def playButtonPressed(self):
         subprocess.call([cmus_remote_cmd, "-u"])
-        #self.refresh()
     
     def nextButtonPressed(self):
         subprocess.call([cmus_remote_cmd, "-n"])
-        #self.refresh()
     
     def prevButtonPressed(self):
         subprocess.call([cmus_remote_cmd, "-r"])
-        #self.refresh()
     
     def mouseReleaseEvent(self, event):
         if event.button() == Qt.LeftButton:

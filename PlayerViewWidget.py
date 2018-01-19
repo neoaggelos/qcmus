@@ -20,8 +20,6 @@ class PlayerViewWidget(QWidget):
         # layout
         self.setLayout(QVBoxLayout())
         self.layout().setAlignment(Qt.AlignCenter)
-        #self.layout().setContentsMargins(0,0,0,0)
-        #self.layout().setSizeConstraint(QLayout.SetMinAndMaxSize)
         
         # album art
         self.layout().addStretch(-1)
@@ -52,12 +50,6 @@ class PlayerViewWidget(QWidget):
         self.album_label = create_label('', 1)
         
         # time slider
-        '''
-        self.time_slider = QSlider(Qt.Horizontal)
-        self.time_slider.setTracking(True)
-        self.time_slider.setFocusPolicy(Qt.NoFocus)
-        self.time_slider.setStyleSheet('QSlider { border: none; outline: none; }')
-        '''
         self.time_slider = _Slider(Qt.Horizontal)
         self.time_slider.valueChanged.connect(self.seekTo)
         self.layout().addWidget(self.time_slider)
@@ -129,17 +121,12 @@ class PlayerViewWidget(QWidget):
     
     def playButtonPressed(self):
         subprocess.call([cmus_remote_cmd, "-u"])
-        #self.refresh()
     
     def nextButtonPressed(self):
         subprocess.call([cmus_remote_cmd, "-n"])
-        #self.refresh()
     
     def prevButtonPressed(self):
         subprocess.call([cmus_remote_cmd, "-r"])
-        #self.refresh()
-    
+        
     def seekTo(self):
-        #if not self.time_slider.isSliderDown():
         subprocess.call([cmus_remote_cmd, "-C", "seek {}".format(self.time_slider.value())])
-        #self.refresh()

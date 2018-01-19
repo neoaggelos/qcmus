@@ -66,13 +66,6 @@ class cmus:
         self.aaa_mode = self.recoverField('set aaa_mode', '')
         self.play_sorted = self.recoverField('set play_sorted', '')
         
-        '''
-        # returns something like " setting: 'follow=true/false' "
-        # check 
-        follow = subprocess.run([cmus_remote_cmd, "-C", 'set follow'], stdout=subprocess.PIPE).stdout.decode('utf-8')
-        self.follow = 'true' if follow.find('true') != -1 else 'false'
-        '''
-        
         self.vol_right = self.recoverField('set vol_right', '0')
         self.vol_left = self.recoverField('set vol_left', '0')
         self.vol = max(int(self.vol_right), int(self.vol_left))
