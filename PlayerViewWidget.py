@@ -130,3 +130,39 @@ class PlayerViewWidget(QWidget):
         
     def seekTo(self):
         subprocess.call([cmus_remote_cmd, "-C", "seek {}".format(self.time_slider.value())])
+    
+    def contextMenuEvent(self, event):
+        m = QMenu()
+        
+        repeat = m.addAction("Repeat\t" + self.parent.cmus.repeat)
+        repeat_current = m.addAction("Repeat current\t" + self.parent.cmus.repeat_current)
+        shuffle = m.addAction("Shuffle\t" + self.parent.cmus.shuffle)
+        continue_ = m.addAction("Continue\t" + self.parent.cmus.continue_)
+        aaa_mode = m.addAction("Aaa mode\t" + self.parent.cmus.aaa_mode)
+        play_sorted = m.addAction("Play sorted\t" + self.parent.cmus.play_sorted)
+        m.addSeparator()
+        clear_queue = m.addAction("Clear play queue")
+        jump_to_album = m.addAction("Jump to album")
+        raise_vte = m.addAction("Raise cmus window")
+        
+        res = m.exec_(self.mapToGlobal(event.pos()))
+        
+        if res == repeat:
+            subprocess.run([cmus_remote_cmd, "-C", "toggle repeat"])
+        elif res == repeat_current:
+            subprocess.run([cmus_remote_cmd, "-C", "toggle repeat_current"])
+        elif res == shuffle:
+            subprocess.run([cmus_remote_cmd, "-C", "toggle shuffle"])
+        elif res == continue_:
+            subprocess.run([cmus_remote_cmd, "-C", "toggle continue"])
+        elif res == aaa_mode:
+            subprocess.run([cmus_remote_cmd, "-C", "toggle aaa_mode"])
+        elif res == play_sorted:
+            subprocess.run([cmus_remote_cmd, "-C", "toggle play_sorted"])
+        elif res == clear_queue:
+            subprocess.run([cmus_remote_cmd, "-c", "-q"])
+        elif res == jump_to_album:
+            subprocess.run([cmus_remote_cmd, "-C", "view 2", 'filter album="{}" & artist="{}"'.format(self.parent.cmus.album, self.parent.cmus.artist)])
+        elif res == raise_vte:
+            subprocess.run([cmus_remote_cmd, "-C", "raise-vte"])
+    
