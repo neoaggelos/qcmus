@@ -82,7 +82,7 @@ songs_tab_show_full_name = False
 
 
 # Album art size for each file (0 == don't show album art)
-songs_tab_cover_size = 40
+songs_tab_cover_size = 0
 
 
 #########################################################################
