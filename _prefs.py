@@ -53,7 +53,7 @@ qcmus_playlist_name = '_qcmus_playlist_'
 
 
 # listen to default cmus keyboard shortcuts
-cmus_shortcuts_enabled = False
+cmus_shortcuts_enabled = True
 
 
 #########################################################################
