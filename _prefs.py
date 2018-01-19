@@ -3,6 +3,10 @@
 from _statusbar_message_funcs import *
 from PyQt5.QtCore import QSize
 
+#########################################################################
+### cmus settings
+#########################################################################
+
 # cmus-remote executable
 cmus_remote_cmd = 'cmus-remote'
 
@@ -24,8 +28,37 @@ cmus_autostart_cmd = ['gnome-terminal', '--', cmus_cmd]
 #cmus_autostart_terminal_cmd = ['exo-open', '--launch', 'TerminalEmulator', cmus_cmd]
 
 
+#########################################################################
+### player settings
+#########################################################################
+
 # Keep only the first N characters for huge song names (-1 to keep the whole string)
 songinfo_length_max = -1
+
+
+# Album art size on player tab
+player_coversize = 400
+
+
+# Album art size on mini player
+miniplayer_coversize = 50
+
+
+#########################################################################
+### qcmus settings
+#########################################################################
+
+# qcmus playlist name (used for playing other playlists)
+qcmus_playlist_name = '_qcmus_playlist_'
+
+
+#########################################################################
+### albums tab settings
+#########################################################################
+
+# Album sort method
+default_albums_sort = "album"
+#default_albums_sort = "artist"
 
 
 # Size of album image in albums tab
@@ -40,17 +73,31 @@ spacing = 20
 column_width = album_size  + 2.3*spacing
 
 
-# Album art size on player tab
-player_coversize = 400
+#########################################################################
+### songs tab settings
+#########################################################################
+
+# Display full file name in songs tab
+songs_tab_show_full_name = False
 
 
-# Album art size on mini player
-miniplayer_coversize = 50
+# Album art size for each file (0 == don't show album art)
+songs_tab_cover_size = 40
 
 
-# Album library sort method
-default_albums_sort = "album"
-#default_albums_sort = "artist"
+#########################################################################
+### gui settings
+#########################################################################
+
+# Available window sizes
+window_sizes = {
+    '1' : QSize(player_coversize + spacing, player_coversize + 280),
+    '2' : QSize(player_coversize * 2, player_coversize + 280),
+    '3' : QSize(player_coversize * 2.5, player_coversize + 400)
+}
+
+# Resizable window (if True, long song titles may resize the window)
+allow_resize = True
 
 
 # Status bar always on
@@ -70,20 +117,3 @@ statusbar_font = 'monospace'
 #statusbar_font = 'Ubuntu Mono'
 
 
-# Display full file name in songs tab
-songs_tab_show_full_name = False
-
-
-# qcmus playlist name (used for playing other playlists)
-qcmus_playlist_name = '_qcmus_playlist_'
-
-
-# Available window sizes
-window_sizes = {
-    '1' : QSize(player_coversize + spacing, player_coversize + 280),
-    '2' : QSize(player_coversize * 2, player_coversize + 280),
-    '3' : QSize(player_coversize * 2.5, player_coversize + 400)
-}
-
-# Resizable window (size may change for long song titles)
-allow_resize = True
