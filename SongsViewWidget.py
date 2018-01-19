@@ -47,6 +47,10 @@ class SongsViewWidget(QScrollArea):
                         pass
                 
                 btn.setFixedSize(btn.sizeHint())
+                btn.setFocusPolicy(Qt.NoFocus)
+                btn.setContextMenuPolicy(Qt.CustomContextMenu)
+                btn.customContextMenuRequested.connect(self.contextMenu(btn))
+                
                 self.items.append( {'widget':btn, 'album':a.album, 'title':s.title, 'artist':a.artist, 'fname':os.path.basename(s.fname)} )
         
         if songs_tab_sort_by == "album":
@@ -66,5 +70,19 @@ class SongsViewWidget(QScrollArea):
         def callback(self):
             subprocess.run([cmus_remote_cmd, '-C', 'view 1', 'filter', '/{} {} {}'.format(song, artist, album), 'win-activate'])
             
+        return callback
+    
+    def contextMenu(self, btn):
+        def callback(self):
+            m = QMenu()
+            play = m.addAction("Play")
+            add_to_queue = m.addAction("Add to play queue")
+            
+            res = m.exec_(QCursor.pos())
+            if res == play:
+                subprocess.run([cmus_remote_cmd, '-C', 'player-play {}'.format(btn.toolTip())])
+            elif res == add_to_queue:
+                subprocess.run([cmus_remote_cmd, '-q', btn.toolTip()])
+        
         return callback
 
