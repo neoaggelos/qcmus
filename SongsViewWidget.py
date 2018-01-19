@@ -41,7 +41,7 @@ class SongsViewWidget(QScrollArea):
                 
                 if songs_tab_cover_size > 0:
                     try:
-                        btn.setIcon(QIcon(pix.scaled(songs_tab_cover_size, songs_tab_cover_size)))
+                        btn.setIcon(QIcon(pix))
                         btn.setIconSize(QSize(songs_tab_cover_size, songs_tab_cover_size))
                     except:
                         pass

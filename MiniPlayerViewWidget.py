@@ -26,7 +26,7 @@ class MiniPlayerViewWidget(QWidget):
         self.albumart_label = QLabel()
         self.albumart_label.setAlignment(Qt.AlignCenter)
         self.albumart_label.setFixedSize(QSize(coversize, coversize))
-        self.albumart_label.setStyleSheet('QLabel { border: 2px solid black; }')
+        #self.albumart_label.setStyleSheet('QLabel { border: 1px solid black; }')
         
         self.layout().addWidget(self.albumart_label)
         self.layout().setAlignment(self.albumart_label, Qt.AlignLeft)
@@ -84,7 +84,7 @@ class MiniPlayerViewWidget(QWidget):
             if self.parent.cmus.albumart != []:
                 pix = QPixmap()
                 pix.loadFromData(self.parent.cmus.albumart.data, self.parent.cmus.albumart.mime)
-                self.albumart_label.setPixmap(pix.scaled(coversize, coversize))
+                self.albumart_label.setPixmap(pix.scaled(coversize, coversize, transformMode = Qt.SmoothTransformation))
             else:
                 self.albumart_label.clear()
     

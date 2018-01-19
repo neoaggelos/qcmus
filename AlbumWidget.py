@@ -27,7 +27,7 @@ class AlbumWidget(QWidget):
             pix = QPixmap()
             pix.loadFromData(art.data, art.mime)
             
-            btn.setIcon(QIcon(pix.scaled(album_size, album_size)))
+            btn.setIcon(QIcon(pix))
             btn.setIconSize(QSize(album_size, album_size))
             btn.setToolTip(artist + ' - ' + album)
         

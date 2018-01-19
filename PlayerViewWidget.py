@@ -26,7 +26,7 @@ class PlayerViewWidget(QWidget):
         self.albumart_label = QLabel()
         self.albumart_label.setAlignment(Qt.AlignCenter)
         self.albumart_label.setFixedSize(QSize(coversize, coversize))
-        self.albumart_label.setStyleSheet('QLabel { border: 2px solid black; }')
+        self.albumart_label.setStyleSheet('QLabel { border: 1px solid black; }')
         
         self.layout().addWidget(self.albumart_label)
         self.layout().setAlignment(self.albumart_label, Qt.AlignCenter)
@@ -110,7 +110,7 @@ class PlayerViewWidget(QWidget):
                 pix = QPixmap()
                 pix.loadFromData(self.parent.cmus.albumart.data, self.parent.cmus.albumart.mime)
                 self.albumart_label.setText('')
-                self.albumart_label.setPixmap(pix.scaled(coversize, coversize))
+                self.albumart_label.setPixmap(pix.scaled(coversize, coversize, transformMode = Qt.SmoothTransformation))
     
     def playButtonIcon(self):
         name = 'media-playback-start'
@@ -143,6 +143,7 @@ class PlayerViewWidget(QWidget):
         m.addSeparator()
         clear_queue = m.addAction("Clear play queue")
         jump_to_album = m.addAction("Jump to album")
+        find_in_cmus = m.addAction("Find in cmus")
         raise_vte = m.addAction("Raise cmus window")
         
         res = m.exec_(self.mapToGlobal(event.pos()))
@@ -163,6 +164,8 @@ class PlayerViewWidget(QWidget):
             subprocess.run([cmus_remote_cmd, "-c", "-q"])
         elif res == jump_to_album:
             subprocess.run([cmus_remote_cmd, "-C", "view 2", 'filter album="{}" & artist="{}"'.format(self.parent.cmus.album, self.parent.cmus.artist)])
+        elif res == find_in_cmus:
+            subprocess.run([cmus_remote_cmd, "-C", "view 2", 'filter album="{}" & artist="{}"'.format(self.parent.cmus.album, self.parent.cmus.artist), '/{}'.format(self.parent.cmus.title)])
         elif res == raise_vte:
             subprocess.run([cmus_remote_cmd, "-C", "raise-vte"])
     
