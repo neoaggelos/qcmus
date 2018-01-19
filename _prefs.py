@@ -52,6 +52,10 @@ miniplayer_coversize = 50
 qcmus_playlist_name = '_qcmus_playlist_'
 
 
+# listen to default cmus keyboard shortcuts
+cmus_shortcuts_enabled = False
+
+
 #########################################################################
 ### albums tab settings
 #########################################################################
@@ -85,15 +89,23 @@ songs_tab_show_full_name = False
 songs_tab_cover_size = 0
 
 
+# Sort method
+#songs_tab_sort_by = "album"
+songs_tab_sort_by = "artist"
+#songs_tab_sort_by = "filename"
+#songs_tab_sort_by = "title"
+
+
 #########################################################################
 ### gui settings
 #########################################################################
 
-# Available window sizes
+# Available window sizes (may add up to 9)
 window_sizes = {
     '1' : QSize(player_coversize + spacing, player_coversize + 280),
     '2' : QSize(player_coversize * 2, player_coversize + 280),
-    '3' : QSize(player_coversize * 2.5, player_coversize + 400)
+    '3' : QSize(player_coversize * 2.5, player_coversize + 400),
+    # '4' : QSize( custom_width, custom_height)
 }
 
 # Resizable window (if True, long song titles may resize the window)

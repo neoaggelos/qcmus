@@ -20,7 +20,7 @@ from PlayerViewWidget import PlayerViewWidget
 from MiniPlayerViewWidget import MiniPlayerViewWidget
 from Library import Library
 
-from _prefs import cmus_remote_cmd, statusbar_message, statusbar_always_on, statusbar_font_size, statusbar_font, window_sizes, allow_resize
+from _prefs import cmus_remote_cmd, statusbar_message, statusbar_always_on, statusbar_font_size, statusbar_font, window_sizes, allow_resize, cmus_shortcuts_enabled
 
 class qcmus(QMainWindow):
     def __init__(self):
@@ -104,28 +104,29 @@ class qcmus(QMainWindow):
             
             return call
         
-        add_action('play/pause', 'c', cmus_command('player-pause'))
-        add_action('stop', 'v', cmus_command('player-stop'))
-        add_action('prev', 'z', cmus_command('player-prev'))
-        add_action('next', 'b', cmus_command('player-next'))
-        add_action('+1m', '.', cmus_command('seek +1m'))
-        add_action('-1m', ',', cmus_command('seek -1m'))
-        add_action('+5s', 'Right', cmus_command('seek +5'))
-        add_action('+5s', 'l', cmus_command('seek +5'))
-        add_action('+5s', 'Left', cmus_command('seek -5'))
-        add_action('+5s', 'h', cmus_command('seek -5'))
-        add_action('+10%', '+', cmus_command('vol +10%'))
-        add_action('-10%', '-', cmus_command('vol -10%'))
-        add_action('-1% left', '{', cmus_command('vol -1% -0'))
-        add_action('-1% right', '}', cmus_command('vol -0 -1%'))
-        add_action('+1% left', '[', cmus_command('vol +1% -0'))
-        add_action('+1% right', ']', cmus_command('vol -0 +1%'))
-        add_action('repeat', 'r', cmus_command('toggle repeat'))
-        add_action('shuffle', 's', cmus_command('toggle shuffle'))
-        add_action('r-current', 'Ctrl+r', cmus_command('toggle repeat_current'))
-        add_action('continue', 'Alt+c', cmus_command('toggle continue'))
-        add_action('sorted', 'o', cmus_command('toggle play_sorted'))
-        add_action('aaa_mode', 'm', cmus_command('toggle aaa_mode'))
+        if cmus_shortcuts_enabled:
+            add_action('play/pause', 'c', cmus_command('player-pause'))
+            add_action('stop', 'v', cmus_command('player-stop'))
+            add_action('prev', 'z', cmus_command('player-prev'))
+            add_action('next', 'b', cmus_command('player-next'))
+            add_action('+1m', '.', cmus_command('seek +1m'))
+            add_action('-1m', ',', cmus_command('seek -1m'))
+            add_action('+5s', 'Right', cmus_command('seek +5'))
+            add_action('+5s', 'l', cmus_command('seek +5'))
+            add_action('+5s', 'Left', cmus_command('seek -5'))
+            add_action('+5s', 'h', cmus_command('seek -5'))
+            add_action('+10%', '+', cmus_command('vol +10%'))
+            add_action('-10%', '-', cmus_command('vol -10%'))
+            add_action('-1% left', '{', cmus_command('vol -1% -0'))
+            add_action('-1% right', '}', cmus_command('vol -0 -1%'))
+            add_action('+1% left', '[', cmus_command('vol +1% -0'))
+            add_action('+1% right', ']', cmus_command('vol -0 +1%'))
+            add_action('repeat', 'r', cmus_command('toggle repeat'))
+            add_action('shuffle', 's', cmus_command('toggle shuffle'))
+            add_action('r-current', 'Ctrl+r', cmus_command('toggle repeat_current'))
+            add_action('continue', 'Alt+c', cmus_command('toggle continue'))
+            add_action('sorted', 'o', cmus_command('toggle play_sorted'))
+            add_action('aaa_mode', 'm', cmus_command('toggle aaa_mode'))
         
         # auto refresh player views
         refreshThread = threading.Thread(target = self.refreshScheduler)

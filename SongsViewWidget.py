@@ -6,7 +6,7 @@ from PyQt5.QtGui import *
 
 import subprocess, mutagen, os
 
-from _prefs import cmus_remote_cmd, songs_tab_show_full_name, songs_tab_cover_size
+from _prefs import cmus_remote_cmd, songs_tab_show_full_name, songs_tab_cover_size, songs_tab_sort_by
 
 class SongsViewWidget(QScrollArea):
     def __init__(self, parent):
@@ -20,6 +20,7 @@ class SongsViewWidget(QScrollArea):
         self.widget().layout().setContentsMargins(0,0,0,0)
         self.widget().layout().setSpacing(0)
         
+        self.items = []
         for a in parent.library.albums:
             try:
                 pix = QPixmap()
@@ -46,9 +47,20 @@ class SongsViewWidget(QScrollArea):
                         pass
                 
                 btn.setFixedSize(btn.sizeHint())
-                
-                self.widget().layout().addWidget(btn)
-                
+                self.items.append( {'widget':btn, 'album':a.album, 'title':s.title, 'artist':a.artist, 'fname':os.path.basename(s.fname)} )
+        
+        if songs_tab_sort_by == "album":
+            self.items.sort(key=lambda i : i['album'])
+        elif songs_tab_sort_by == "artist":
+            self.items.sort(key=lambda i : i['artist'])
+        elif songs_tab_sort_by == "title":
+            self.items.sort(key=lambda i : i['title'])
+        elif songs_tab_sort_by == "filename":
+            self.items.sort(key=lambda i : i['fname'])
+        
+        for i in self.items:
+            self.widget().layout().addWidget(i['widget'])
+        
     
     def itemClicked(self, fname, song, album, artist):
         def callback(self):
