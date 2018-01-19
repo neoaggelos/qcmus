@@ -58,7 +58,7 @@ class qcmus(QMainWindow):
         self.centralWidget().addTab(self.albums_tab, "Albums")
         self.centralWidget().addTab(self.songs_tab, "Songs")
         
-        self.centralWidget().setStyleSheet('QTabWidget::tab-bar { alignment: center; }')
+        self.centralWidget().setStyleSheet('QTabWidget::tab-bar { alignment: left; }')
         #self.centralWidget().setMinimumSize(self.minimumSize().width(), self.minimumSize().height())
         self.setWindowTitle(self.cmus.title + ' - ' + self.cmus.artist)
         

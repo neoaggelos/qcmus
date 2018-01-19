@@ -34,8 +34,9 @@ class AlbumViewWidget(QScrollArea):
         
         self.widgets = []
         for a in lib.albums:
-            w = AlbumWidget(a.artist, a.album, a.art)
-            self.widgets.append(w)
+            if from_artist == '__all__' or from_artist == a.artist:
+                w = AlbumWidget(a.artist, a.album, a.art)
+                self.widgets.append(w)
         
         if default_albums_sort == 'album':
             self.widgets.sort(key=lambda w: w.album)
