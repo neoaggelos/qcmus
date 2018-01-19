@@ -71,6 +71,7 @@ class qcmus(QMainWindow):
             self.is_maximized = False
             self.setFixedSize(window_sizes['1'])
         
+        self.setWindowIcon(QIcon.fromTheme('audio-player'))
         self.show()
         
         def add_action(name, shortcut, call):
