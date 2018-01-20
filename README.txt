@@ -49,14 +49,8 @@ TODO
 * Browse artists/playlists
 * View currently playing queue
 * Add song/album/artist/playlist to queue
-* Add a proper references dialog
+* Add a proper preferences dialog
 * Clean-up the code where possible
-
-
-KNOWN BUGS
-----------
-
-* Time slider may get stuck if idle. Pause/resume fixes this
 
 
 LICENSE

@@ -20,7 +20,7 @@ from PlayerViewWidget import PlayerViewWidget
 from MiniPlayerViewWidget import MiniPlayerViewWidget
 from Library import Library
 
-from _prefs import cmus_remote_cmd, statusbar_message, statusbar_always_on, statusbar_font_size, statusbar_font, window_sizes, allow_resize, cmus_shortcuts_enabled, qcmus_exit_behaviour, cmus_autostart_if_dead
+from _prefs import tabs_alignment, cmus_remote_cmd, statusbar_message, statusbar_always_on, statusbar_font_size, statusbar_font, window_sizes, allow_resize, cmus_shortcuts_enabled, qcmus_exit_behaviour, cmus_autostart_if_dead
 
 class qcmus(QMainWindow):
     def __init__(self):
@@ -58,7 +58,7 @@ class qcmus(QMainWindow):
         self.centralWidget().addTab(self.albums_tab, "Albums")
         self.centralWidget().addTab(self.songs_tab, "Songs")
         
-        self.centralWidget().setStyleSheet('QTabWidget::tab-bar { alignment: left; }')
+        self.centralWidget().setStyleSheet('QTabWidget::tab-bar { alignment: ' + tabs_alignment + '; }')
         self.setWindowTitle(self.cmus.title + ' - ' + self.cmus.artist)
         
         # status bar font
@@ -129,19 +129,13 @@ class qcmus(QMainWindow):
             add_action('sorted', 'o', cmus_command('toggle play_sorted'))
             add_action('aaa_mode', 'm', cmus_command('toggle aaa_mode'))
         
-        # auto refresh player views
-        refreshThread = threading.Thread(target = self.refreshScheduler)
-        refreshThread.daemon = True
-        refreshThread.start()
-        
         # status bar
         self.statusbar_message = ''
         
-    def refreshScheduler(self):
-        while True:
-            self.refresh()
-            
-            time.sleep(0.3)
+        # auto refresh
+        self.timer = QTimer()
+        self.timer.timeout.connect(self.refresh)
+        self.timer.start(500)
     
     def refresh(self, force=False):
         self.cmus.refresh()

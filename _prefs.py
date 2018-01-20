@@ -43,7 +43,7 @@ songinfo_length_max = -1
 
 
 # Album art size on player tab
-player_coversize = 500
+player_coversize = 400
 
 
 # Album art size on mini player
@@ -115,11 +115,11 @@ window_sizes = {
 }
 
 # Resizable window (if True, long song titles may resize the window)
-allow_resize = True
+allow_resize = False
 
 
 # Status bar always on
-statusbar_always_on = True
+statusbar_always_on = False
 
 
 # See _statusbar_message_funcs.py
@@ -135,3 +135,7 @@ statusbar_font = 'monospace'
 #statusbar_font = 'Ubuntu Mono'
 
 
+# Position of tab bar
+tabs_alignment = 'left'
+#tabs_alignment = 'center'
+#tabs_alignment = 'right'
