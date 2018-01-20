@@ -19,8 +19,21 @@ class SongsViewWidget(QScrollArea):
         self.widget().setLayout(QVBoxLayout())
         self.widget().layout().setContentsMargins(0,0,0,0)
         self.widget().layout().setSpacing(0)
+        self.widget().layout().setAlignment(Qt.AlignTop)
         
-        self.items = []
+        self.search_layout = QHBoxLayout()
+        self.search_layout.setContentsMargins(0,0,0,0)
+        search_icon = QLabel()
+        search_icon.setPixmap(QIcon.fromTheme('system-search').pixmap(40, 40))
+        self.search_layout.addWidget(search_icon)
+        self.search_layout.setAlignment(search_icon, Qt.AlignTop)
+        self.searchbox = QLineEdit()
+        self.searchbox.setPlaceholderText('Search')
+        self.searchbox.textChanged.connect(self.searchAction)
+        self.search_layout.addWidget(self.searchbox)
+        
+        self.widget().layout().addLayout(self.search_layout)
+        self.widgets = []
         for a in parent.library.albums:
             try:
                 pix = QPixmap()
@@ -34,37 +47,39 @@ class SongsViewWidget(QScrollArea):
                 else:
                     text = os.path.basename(s.fname)
                 
-                btn = QPushButton(text)
-                btn.setToolTip(s.fname)
-                btn.setFlat(True)
-                btn.clicked.connect(self.itemClicked(s.fname, s.title, a.album, a.artist))
+                w = QPushButton(text)
+                w.setToolTip(s.fname)
+                w.setFlat(True)
+                w.clicked.connect(self.itemClicked(s.fname, s.title, a.album, a.artist))
                 
                 if songs_tab_cover_size > 0:
                     try:
-                        btn.setIcon(QIcon(pix))
-                        btn.setIconSize(QSize(songs_tab_cover_size, songs_tab_cover_size))
+                        w.setIcon(QIcon(pix))
+                        w.setIconSize(QSize(songs_tab_cover_size, songs_tab_cover_size))
                     except:
                         pass
                 
-                btn.setFixedSize(btn.sizeHint())
-                btn.setFocusPolicy(Qt.NoFocus)
-                btn.setContextMenuPolicy(Qt.CustomContextMenu)
-                btn.customContextMenuRequested.connect(self.contextMenu(btn))
+                w.setFixedSize(w.sizeHint())
+                w.setFocusPolicy(Qt.NoFocus)
+                w.setContextMenuPolicy(Qt.CustomContextMenu)
+                w.customContextMenuRequested.connect(self.contextMenu(w))
                 
-                self.items.append( {'widget':btn, 'album':a.album, 'title':s.title, 'artist':a.artist, 'fname':os.path.basename(s.fname)} )
+                w.setProperty('artist', a.artist)
+                w.setProperty('album', a.album)
+                w.setProperty('title', s.title)
+                self.widgets.append( w )
         
         if songs_tab_sort_by == "album":
-            self.items.sort(key=lambda i : i['album'])
+            self.widgets.sort(key=lambda w : w.property('album'))
         elif songs_tab_sort_by == "artist":
-            self.items.sort(key=lambda i : i['artist'])
+            self.widgets.sort(key=lambda w : w.property('artist'))
         elif songs_tab_sort_by == "title":
-            self.items.sort(key=lambda i : i['title'])
+            self.widgets.sort(key=lambda w : w.property('title'))
         elif songs_tab_sort_by == "filename":
-            self.items.sort(key=lambda i : i['fname'])
+            self.widgets.sort(key=lambda w : w.toolTip())
         
-        for i in self.items:
-            self.widget().layout().addWidget(i['widget'])
-        
+        for w in self.widgets:
+            self.widget().layout().addWidget(w)
     
     def itemClicked(self, fname, song, album, artist):
         def callback(self):
@@ -85,4 +100,15 @@ class SongsViewWidget(QScrollArea):
                 subprocess.run([cmus_remote_cmd, '-q', btn.toolTip()])
         
         return callback
-
+    
+    def searchAction(self):
+        needles = self.searchbox.text().lower().split()
+        
+        for w in self.widgets:
+            haystack = '{}{}{}{}'.format(w.toolTip(), w.property('artist'), w.property('album'), w.property('title')).lower()
+            hide = False
+            for n in needles:
+                if not n in haystack:
+                    hide = True
+            
+            w.hide() if hide else w.show()
