@@ -12,7 +12,6 @@ class SongsViewWidget(QWidget):
     def __init__(self, parent):
         super().__init__()
         
-        self.parent = parent
         self.scroll = QScrollArea()
         self.scroll.setWidget(QWidget())
         self.scroll.setWidgetResizable(True)

@@ -2,6 +2,7 @@
 
 from _statusbar_message_funcs import *
 from PyQt5.QtCore import QSize
+from os.path import expandvars
 
 #########################################################################
 ### cmus settings
@@ -16,7 +17,7 @@ cmus_cmd = 'cmus'
 
 
 # path to cmus library (lib.pl) -- can contain environment variables
-cmus_lib_path = '$HOME/.config/cmus/lib.pl'
+cmus_lib_path = expandvars('$HOME/.config/cmus/lib.pl')
 
 
 # auto start cmus if needed
@@ -60,6 +61,18 @@ qcmus_playlist_name = '_qcmus_playlist_'
 
 # listen to default cmus keyboard shortcuts
 cmus_shortcuts_enabled = True
+
+
+# cache cmus library data (using pickle)
+qcmus_cache_library = True
+
+
+# cache inside cmus config dir by default
+qcmus_cache_file_prefix = expandvars('$HOME/.config/cmus/qcmus_')
+
+
+# library cache
+qcmus_cache_library_file = qcmus_cache_file_prefix + 'lib'
 
 
 #########################################################################

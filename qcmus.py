@@ -1,17 +1,9 @@
 #! /usr/bin/python3
-import sys, threading, time, subprocess
+import sys, threading, time, subprocess, os
 
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
-
-'''
-from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import (QWidget, QLabel, QSlider,
-        QHBoxLayout, QVBoxLayout, QApplication, QPushButton,
-        QMainWindow, QAction)
-from PyQt5.QtGui import QIcon, QPixmap, QFont
-'''
 
 from cmus import cmus
 from AlbumViewWidget import AlbumViewWidget
@@ -20,7 +12,9 @@ from PlayerViewWidget import PlayerViewWidget
 from MiniPlayerViewWidget import MiniPlayerViewWidget
 from Library import Library
 
-from _prefs import tabs_alignment, cmus_remote_cmd, statusbar_message, statusbar_always_on, statusbar_font_size, statusbar_font, window_sizes, allow_resize, cmus_shortcuts_enabled, qcmus_exit_behaviour, cmus_autostart_if_dead
+import pickle
+
+from _prefs import qcmus_cache_library_file, qcmus_cache_library, tabs_alignment, cmus_remote_cmd, statusbar_message, statusbar_always_on, statusbar_font_size, statusbar_font, window_sizes, allow_resize, cmus_shortcuts_enabled, qcmus_exit_behaviour, cmus_autostart_if_dead
 
 class qcmus(QMainWindow):
     def __init__(self):
@@ -31,8 +25,16 @@ class qcmus(QMainWindow):
     def initUI(self):
         # init controller
         self.cmus = cmus()
-        self.library = Library()
-
+        
+        if qcmus_cache_library:
+            try:
+                self.library = pickle.load(open(qcmus_cache_library_file, 'rb'))
+            except:
+                self.library = Library()
+                pickle.dump(self.library, open(qcmus_cache_library_file, 'wb'), -1)
+        else:
+            self.library = Library()
+        
         # now playing tab
         self.nowplaying_tab = PlayerViewWidget(self)
         
@@ -86,7 +88,15 @@ class qcmus(QMainWindow):
         def forceRefresh():
             self.refresh(True)
         
+        def clearCache():
+            try:
+                os.remove(qcmus_cache_library_file)
+                QMessageBox(QMessageBox.Information, 'Cache cleared', 'Restart qcmus to reload library').exec_()
+            except:
+                pass
+        
         add_action('Refresh', 'F1', forceRefresh)
+        add_action('Cache', 'F2', clearCache)
         
         # quick jump to view
         add_action('Now Playing', 'Alt+1', self.jumpTo(self.nowplaying_tab))

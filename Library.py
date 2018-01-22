@@ -37,7 +37,7 @@ class Song():
 
 class Library():
     def __init__(self):
-        fp = open(os.path.expandvars(cmus_lib_path), 'r')
+        fp = open(cmus_lib_path, 'r')
         
         self.albums = []
         

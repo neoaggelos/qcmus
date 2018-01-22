@@ -4,9 +4,9 @@ from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
 
-import subprocess, datetime
+import subprocess, datetime, os
 
-from _prefs import player_coversize, cmus_remote_cmd
+from _prefs import player_coversize, cmus_remote_cmd, qcmus_cache_library_file
 
 from _Slider import _Slider
 coversize = player_coversize
@@ -145,6 +145,8 @@ class PlayerViewWidget(QWidget):
         jump_to_album = m.addAction("Jump to album")
         find_in_cmus = m.addAction("Find in cmus")
         raise_vte = m.addAction("Raise cmus window")
+        m.addSeparator()
+        clear_cache = m.addAction("Clear library cache")
         
         res = m.exec_(self.mapToGlobal(event.pos()))
         
@@ -168,4 +170,11 @@ class PlayerViewWidget(QWidget):
             subprocess.run([cmus_remote_cmd, "-C", "view 2", 'filter album="{}" & artist="{}"'.format(self.parent.cmus.album, self.parent.cmus.artist), '/{}'.format(self.parent.cmus.title)])
         elif res == raise_vte:
             subprocess.run([cmus_remote_cmd, "-C", "raise-vte"])
+        elif res == clear_cache:
+            try:
+                os.remove(qcmus_cache_library_file)
+                QMessageBox(QMessageBox.Information, 'Cache cleared', 'Restart qcmus to reload library').exec_()
+            except:
+                pass
+                
     
