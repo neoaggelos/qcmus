@@ -8,18 +8,19 @@ import subprocess, mutagen, os
 
 from _prefs import cmus_remote_cmd, songs_tab_show_full_name, songs_tab_cover_size, songs_tab_sort_by
 
-class SongsViewWidget(QScrollArea):
+class SongsViewWidget(QWidget):
     def __init__(self, parent):
         super().__init__()
         
         self.parent = parent
-        self.setWidget(QWidget())
-        self.setWidgetResizable(True)
+        self.scroll = QScrollArea()
+        self.scroll.setWidget(QWidget())
+        self.scroll.setWidgetResizable(True)
         
-        self.widget().setLayout(QVBoxLayout())
-        self.widget().layout().setContentsMargins(0,0,0,0)
-        self.widget().layout().setSpacing(0)
-        self.widget().layout().setAlignment(Qt.AlignTop)
+        self.scroll.widget().setLayout(QVBoxLayout())
+        self.scroll.widget().layout().setContentsMargins(0,0,0,0)
+        self.scroll.widget().layout().setSpacing(0)
+        self.scroll.widget().layout().setAlignment(Qt.AlignTop)
         
         self.search_layout = QHBoxLayout()
         self.search_layout.setContentsMargins(0,0,0,0)
@@ -32,7 +33,12 @@ class SongsViewWidget(QScrollArea):
         self.searchbox.textChanged.connect(self.searchAction)
         self.search_layout.addWidget(self.searchbox)
         
-        self.widget().layout().addLayout(self.search_layout)
+        self.setLayout(QVBoxLayout())
+        self.layout().setContentsMargins(0,0,0,0)
+        self.layout().setSpacing(0)
+        self.layout().addLayout(self.search_layout)
+        self.layout().addWidget(self.scroll)
+        
         self.widgets = []
         for a in parent.library.albums:
             try:
@@ -79,7 +85,7 @@ class SongsViewWidget(QScrollArea):
             self.widgets.sort(key=lambda w : w.toolTip())
         
         for w in self.widgets:
-            self.widget().layout().addWidget(w)
+            self.scroll.widget().layout().addWidget(w)
     
     def itemClicked(self, fname, song, album, artist):
         def callback(self):
