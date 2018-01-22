@@ -97,9 +97,9 @@ songs_tab_cover_size = 50
 
 # Sort method
 #songs_tab_sort_by = "album"
-#songs_tab_sort_by = "artist"
+songs_tab_sort_by = "artist"
 #songs_tab_sort_by = "filename"
-songs_tab_sort_by = "title"
+#songs_tab_sort_by = "title"
 
 
 #########################################################################
